@@ -154,7 +154,7 @@ app.get('/api/health', (req, res) => {
 
 // Serve the HTML form at the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'perplexity-Feedback-Form.html'));
+  res.sendFile(path.join(__dirname, 'perplexity-feedback-form.html'));
 });
 
 // Start server
