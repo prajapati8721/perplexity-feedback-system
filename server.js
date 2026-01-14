@@ -145,6 +145,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running ✓' });
 });
 
+// Optional root route (so / doesn't show error)
+app.get('/', (req, res) => {res.send('Perplexity feedback API is running.')});
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
