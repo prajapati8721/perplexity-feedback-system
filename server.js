@@ -1,9 +1,9 @@
-
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 dotenv.config();
 
@@ -37,6 +37,7 @@ app.post('/api/submit-feedback', async (req, res) => {
     const {
       user_name,
       user_email,
+      submission_date,
       search_better,
       first_try,
       daily_workflow,
@@ -56,12 +57,17 @@ app.post('/api/submit-feedback', async (req, res) => {
       });
     }
 
+    // Format dates
+    const serverTimestamp = new Date().toLocaleString();
+    const userSubmissionTime = submission_date ? new Date(submission_date).toLocaleString() : 'Not provided';
+
     // Create email body for admin
     const adminEmailBody = `
 NEW PERPLEXITY FEEDBACK SUBMISSION
 ===================================
 
-Timestamp: ${new Date().toLocaleString()}
+Server Timestamp: ${serverTimestamp}
+User Submitted: ${userSubmissionTime}
 
 USER INFORMATION:
 Name: ${user_name}
@@ -103,7 +109,7 @@ Thank you for providing your feedback on Perplexity! 🎉
 We truly value your input and use it to continuously improve our product.
 
 Your feedback summary:
-- Submitted: ${new Date().toLocaleString()}
+- Submitted: ${userSubmissionTime}
 - Email: ${user_email}
 
 If you have any additional comments, please reply to this email.
@@ -127,6 +133,7 @@ Perplexity Feedback Team
       data: {
         name: user_name,
         email: user_email,
+        submitted_at: submission_date,
         timestamp: new Date().toISOString()
       }
     });
@@ -145,14 +152,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running ✓' });
 });
 
-// Optional root route (so / doesn't show error)
-//app.get('/', (req, res) => {res.send('Perplexity feedback API is running.')});
-
-//Serve the HTML Form at the root URL
-const path = require('path');
+// Serve the HTML form at the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,'perplexity-feedback-form.html'));
+  res.sendFile(path.join(__dirname, 'feedback.html'));
 });
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
