@@ -91,6 +91,7 @@ Generative tasks: ${generative_time_hours} hours ${generative_time_minutes} minu
     `;
 
     // Send admin email
+    /*
     await transporter.sendMail({
       from: process.env.OUTLOOK_EMAIL,
       to: process.env.ADMIN_EMAIL,
@@ -127,7 +128,7 @@ Perplexity Feedback Team
     });
 
     console.log('✓ User confirmation email sent to', user_email);
-
+*/
     return res.json({
       success: true,
       message: 'Feedback submitted successfully!',
