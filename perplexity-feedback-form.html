@@ -436,7 +436,7 @@
                 user_name: document.getElementById('user_name').value,
                 user_email: document.getElementById('user_email').value,
                 submission_date: document.getElementById('submission_date').value,
-                search_better: document.getElementById('search_better').value || '',
+                search_better: document.querySelector('input[name="search_better"]:checked')?.value || '',
                 first_try: document.getElementById('first_try').value || '',
                 daily_workflow: document.getElementById('daily_workflow').value || '',
                 verify_sources: document.getElementById('verify_sources').value || '',
