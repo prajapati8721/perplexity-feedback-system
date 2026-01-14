@@ -146,8 +146,13 @@ app.get('/api/health', (req, res) => {
 });
 
 // Optional root route (so / doesn't show error)
-app.get('/', (req, res) => {res.send('Perplexity feedback API is running.')});
+//app.get('/', (req, res) => {res.send('Perplexity feedback API is running.')});
 
+//Serve the HTML Form at the root URL
+const path = require('path');
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname,'perplexity-feedback-form.html'));
+});
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
