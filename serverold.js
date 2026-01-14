@@ -29,10 +29,10 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Feedback endpoint
+// Store feedback endpoint
 app.post('/api/submit-feedback', async (req, res) => {
   console.log('Received feedback submission:', req.body);
-
+  
   try {
     const {
       user_name,
@@ -49,7 +49,7 @@ app.post('/api/submit-feedback', async (req, res) => {
       generative_time_minutes
     } = req.body;
 
-    // Basic validation
+    // Validate required fields
     if (!user_name || !user_email) {
       return res.status(400).json({
         success: false,
@@ -57,12 +57,11 @@ app.post('/api/submit-feedback', async (req, res) => {
       });
     }
 
+    // Format dates
     const serverTimestamp = new Date().toLocaleString();
-    const userSubmissionTime = submission_date
-      ? new Date(submission_date).toLocaleString()
-      : 'Not provided';
+    const userSubmissionTime = submission_date ? new Date(submission_date).toLocaleString() : 'Not provided';
 
-    // Admin email body
+    // Create email body for admin
     const adminEmailBody = `
 NEW PERPLEXITY FEEDBACK SUBMISSION
 ===================================
@@ -90,7 +89,7 @@ Generative tasks: ${generative_time_hours} hours ${generative_time_minutes} minu
 ===================================
     `;
 
-    // Send admin email
+    // Send email to admin
     await transporter.sendMail({
       from: process.env.OUTLOOK_EMAIL,
       to: process.env.ADMIN_EMAIL,
@@ -99,7 +98,7 @@ Generative tasks: ${generative_time_hours} hours ${generative_time_minutes} minu
       html: `<pre>${adminEmailBody}</pre>`
     });
 
-    console.log('✓ Admin email sent to', process.env.ADMIN_EMAIL);
+    console.log('✓ Admin email sent to ' + process.env.ADMIN_EMAIL);
 
     // Send confirmation email to user
     const userEmailBody = `
@@ -126,33 +125,34 @@ Perplexity Feedback Team
       text: userEmailBody
     });
 
-    console.log('✓ User confirmation email sent to', user_email);
+    console.log('✓ User confirmation email sent to ' + user_email);
 
-    return res.json({
+    res.json({
       success: true,
       message: 'Feedback submitted successfully!',
       data: {
         name: user_name,
         email: user_email,
         submitted_at: submission_date,
-        server_timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString()
       }
     });
+
   } catch (error) {
-    console.error('Server error in /api/submit-feedback:', error);
-    return res.status(500).json({
+    console.error('Error:', error);
+    res.status(500).json({
       success: false,
       message: 'Server error: ' + error.message
     });
   }
 });
 
-// Health check
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running ✓' });
 });
 
-// Serve HTML form
+// Serve the HTML form at the root URL
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'perplexity-feedback-form.html'));
 });
@@ -162,4 +162,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✓ Server running on http://localhost:${PORT}`);
   console.log(`✓ Admin email: ${process.env.ADMIN_EMAIL}`);
+  console.log(`✓ Press Ctrl+C to stop server`);
 });
