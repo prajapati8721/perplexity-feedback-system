@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang=”en”>
+<head>
+    <meta charset=”UTF-8”>
+    <meta name=”viewport” content=”width=device-width, initial-scale=1.0”>
+    <title>Perplexity User Feedback Form</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        Body{font-family:-apple-system,BlinkMacSystemFont,’Segoe UI’,Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+        .container{max-width:700px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.1);padding:40px}
+        .header{text-align:center;margin-bottom:30px;border-bottom:3px solid #667eea;padding-bottom:20px}
+        .header h1{color:#333;font-size:28px;margin-bottom:8px}
+        .header p{color:#666;font-size:14px}
+        .form-section{margin-bottom:28px}
+        .section-title{font-size:16px;font-weight:600;color:#667eea;text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #e0e0e0}
+        .form-group{margin-bottom:20px}
+        Label{display:block;font-size:15px;font-weight:500;color:#333;margin-bottom:10px;line-height:1.4}
+        Input[type=radio]{margin-right:8px;cursor:pointer;width:18px;height:18px;accent-color:#667eea}
+        .radio-group{display:flex;flex-direction:column;gap:10px}
+        .radio-option{display:flex;align-items:center;font-size:14px;color:#555;cursor:pointer}
+        .radio-option:hover{color:#667eea}
+        .frequency-scale{display:flex;gap:8px;flex-wrap:wrap}
+        .frequency-btn{flex:1;min-width:80px;padding:10px;border:2px solid #ddd;background:#fff;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:#666;transition:all .3s ease}
+        .frequency-btn:hover{border-color:#667eea;color:#667eea}
+        .frequency-btn.active{background:#667eea;color:#fff;border-color:#667eea}
+        Input[type=number],input[type=text],input[type=email]{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:6px;font-size:14px;font-family:inherit;transition:border-color .3s ease}
+        Input[type=number]:focus,input[type=text]:focus,input[type=email]:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
+        Input[type=number]{width:100px}
+        .time-input-group{display:flex;gap:15px;align-items:flex-end}
+        .time-input-wrapper{flex:1}
+        .time-input-wrapper label{margin-bottom:8px}
+        .time-input-group input[type=number]{width:100%}
+        .button-group{display:flex;gap:12px;justify-content:center;margin-top:35px}
+        Button{padding:12px 30px;border:none;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s ease}
+        .btn-submit{background:#667eea;color:#fff;min-width:150px}
+        .btn-submit:hover{background:#5568d3;transform:translateY(-2px);box-shadow:0 5px 15px rgba(102,126,234,.4)}
+        .btn-reset{background:#f0f0f0;color:#333;min-width:150px}
+        .btn-reset:hover{background:#e0e0e0}
+        .success-message{display:none;background:#4caf50;color:#fff;padding:15px;border-radius:6px;margin-top:20px;text-align:center;font-weight:500}
+        .required{color:#d32f2f;margin-left:4px}
+        @media (max-width:600px){
+            .container{padding:25px}
+            .header h1{font-size:22px}
+            .frequency-btn{min-width:60px;padding:8px;font-size:12px}
+            .button-group{flex-direction:column}
+            Button{width:100%}
+        }
+    </style>
+</head>
+<body>
+<div class=”container”>
+    <div class=”header”>
+        <h1>Perplexity Feedback</h1>
+        <p>Help us understand how Perplexity is performing for you</p>
+    </div>
+
+    <form id=”feedbackForm”>
+        <div class=”form-section”>
+            <div class=”section-title”>Your Information</div>
+            <div class=”form-group”>
+                <label>Full Name <span class=”required”>*</span></label>
+                <input type=”text” name=”user_name” id=”user_name” required>
+            </div>
+            <div class=”form-group”>
+                <label>Email Address <span class=”required”>*</span></label>
+                <input type=”email” name=”user_email” id=”user_email” required>
+            </div>
+        </div>
+
+        <div class=”form-section”>
+            <div class=”section-title”>Search & Accuracy</div>
+            <div class=”form-group”>
+                <label>Is Perplexity Search better than traditional search engines for you? <span class=”required”>*</span></label>
+                <div class=”radio-group”>
+                    <label class=”radio-option”><input type=”radio” name=”search_better” value=”Yes” required>Yes</label>
+                    <label class=”radio-option”><input type=”radio” name=”search_better” value=”No” required>No</label>
+                    <label class=”radio-option”><input type=”radio” name=”search_better” value=”Unsure” required>Unsure</label>
+                </div>
+            </div>
+
+            <div class=”form-group”>
+                <label>How often do you get the answer you need on your first try? <span class=”required”>*</span></label>
+                <div class=”frequency-scale”>
+                    <button type=”button” class=”frequency-btn” data-name=”first_try” data-value=”Always”>Always</button>
+                    <button type=”button” class=”frequency-btn” data-name=”first_try” data-value=”Usually”>Usually</button>
+                    <button type=”button” class=”frequency-btn” data-name=”first_try” data-value=”Sometimes”>Sometimes</button>
+                    <button type=”button” class=”frequency-btn” data-name=”first_try” data-value=”Rarely”>Rarely</button>
+                    <button type=”button” class=”frequency-btn” data-name=”first_try” data-value=”Never”>Never</button>
+                </div>
+                <input type=”hidden” name=”first_try” id=”first_try” required>
+            </div>
+
+            <div class=”form-group”>
+                <label>How often does Perplexity fit your actual daily workflow? <span class=”required”>*</span></label>
+                <div class=”frequency-scale”>
+                    <button type=”button” class=”frequency-btn” data-name=”daily_workflow” data-value=”Always”>Always</button>
+                    <button type=”button” class=”frequency-btn” data-name=”daily_workflow” data-value=”Usually”>Usually</button>
+                    <button type=”button” class=”frequency-btn” data-name=”daily_workflow” data-value=”Sometimes”>Sometimes</button>
+                    <button type=”button” class=”frequency-btn” data-name=”daily_workflow” data-value=”Rarely”>Rarely</button>
+                    <button type=”button” class=”frequency-btn” data-name=”daily_workflow” data-value=”Never”>Never</button>
+                </div>
+                <input type=”hidden” name=”daily_workflow” id=”daily_workflow” required>
+            </div>
+        </div>
+
+        <div class=”form-section”>
+            <div class=”section-title”>Credibility & Context</div>
+            <div class=”form-group”>
+                <label>How often do you need to go to sources to verify its credibility? <span class=”required”>*</span></label>
+                <div class=”frequency-scale”>
+                    <button type=”button” class=”frequency-btn” data-name=”verify_sources” data-value=”Always”>Always</button>
+                    <button type=”button” class=”frequency-btn” data-name=”verify_sources” data-value=”Usually”>Usually</button>
+                    <button type=”button” class=”frequency-btn” data-name=”verify_sources” data-value=”Sometimes”>Sometimes</button>
+                    <button type=”button” class=”frequency-btn” data-name=”verify_sources” data-value=”Rarely”>Rarely</button>
+                    <button type=”button” class=”frequency-btn” data-name=”verify_sources” data-value=”Never”>Never</button>
+                </div>
+                <input type=”hidden” name=”verify_sources” id=”verify_sources” required>
+            </div>
+
+            <div class=”form-group”>
+                <label>How well does Perplexity handle follow-up questions in context? <span class=”required”>*</span></label>
+                <div class=”radio-group”>
+                    <label class=”radio-option”><input type=”radio” name=”followup_context” value=”Excellent” required>Excellent</label>
+                    <label class=”radio-option”><input type=”radio” name=”followup_context” value=”Good” required>Good</label>
+                    <label class=”radio-option”><input type=”radio” name=”followup_context” value=”Average” required>Average</label>
+                    <label class=”radio-option”><input type=”radio” name=”followup_context” value=”Poor” required>Poor</label>
+                </div>
+            </div>
+        </div>
+
+        <div class=”form-section”>
+            <div class=”section-title”>Time Savings</div>
+            <div class=”form-group”>
+                <label>Please specify the time saved by using Perplexity AI for Research tasks <span class=”required”>*</span></label>
+                <div class=”time-input-group”>
+                    <div class=”time-input-wrapper”>
+                        <label style=”font-size:13px;margin-bottom:8px;”>Hours per week</label>
+                        <input type=”number” name=”research_time_hours” id=”research_time_hours” min=”0” max=”168” step=”0.5” value=”0” required>
+                    </div>
+                    <div class=”time-input-wrapper”>
+                        <label style=”font-size:13px;margin-bottom:8px;”>Minutes per week</label>
+                        <input type=”number” name=”research_time_minutes” id=”research_time_minutes” min=”0” max=”59” step=”1” value=”0” required>
+                    </div>
+                </div>
+            </div>
+
+            <div class=”form-group”>
+                <label>Please specify the time saved by Perplexity AI for generative tasks <span class=”required”>*</span></label>
+                <div class=”time-input-group”>
+                    <div class=”time-input-wrapper”>
+                        <label style=”font-size:13px;margin-bottom:8px;”>Hours per week</label>
+                        <input type=”number” name=”generative_time_hours” id=”generative_time_hours” min=”0” max=”168” step=”0.5” value=”0” required>
+                    </div>
+                    <div class=”time-input-wrapper”>
+                        <label style=”font-size:13px;margin-bottom:8px;”>Minutes per week</label>
+                        <input type=”number” name=”generative_time_minutes” id=”generative_time_minutes” min=”0” max=”59” step=”1” value=”0” required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=”button-group”>
+            <button type=”submit” class=”btn-submit”>Submit Feedback</button>
+            <button type=”reset” class=”btn-reset”>Clear Form</button>
+        </div>
+
+        <div class=”success-message” id=”successMessage”>
+            ✓ Thank you! Your feedback has been submitted successfully.
+        </div>
+    </form>
+</div>
+
+<script>
+Document.querySelectorAll(‘.frequency-btn’).forEach(btn=>{
+  Btn.addEventListener(‘click’,e=>{
+    e.preventDefault();
+    const name=btn.getAttribute(‘data-name’);
+    const value=btn.getAttribute(‘data-value’);
+    document.querySelectorAll(`[data-name=”${name}”]`).forEach(b=>b.classList.remove(‘active’));
+    btn.classList.add(‘active’);
+    document.getElementById(name).value=value;
+  });
+});
+
+Document.getElementById(‘feedbackForm’).addEventListener(‘submit’,async e=>{
+  e.preventDefault();
+  const formData=new FormData(e.target);
+  const data=Object.fromEntries(formData);
+
+  const emailRegex=/^[^s@]+@[^s@]+.[^s@]+$/;
+  if(!emailRegex.test(data.user_email)){
+    alert(‘Please enter a valid email address’);
+    return;
+  }
+
+  Const submitBtn=document.querySelector(‘.btn-submit’);
+  Const originalText=submitBtn.textContent;
+  submitBtn.textContent=’Submitting…’;
+  submitBtn.disabled=true;
+
+  try{
+    const res=await fetch(‘https://perplexity-feedback-onrender.com/api/submit-feedback’,{
+      method:’POST’,
+      headers:{‘Content-Type’:’application/json’},
+      body:JSON.stringify({
+        user_name:data.user_name,
+        user_email:data.user_email,
+        search_better:data.search_better,
+        first_try:data.first_try,
+        daily_workflow:data.daily_workflow,
+        verify_sources:data.verify_sources,
+        followup_context:data.followup_context,
+        research_time_hours:parseFloat(data.research_time_hours)||0,
+        research_time_minutes:parseFloat(data.research_time_minutes)||0,
+        generative_time_hours:parseFloat(data.generative_time_hours)||0,
+        generative_time_minutes:parseFloat(data.generative_time_minutes)||0
+      })
+    });
+    Const result=await res.json();
+    If(result.success){
+      Const msg=document.getElementById(‘successMessage’);
+      Msg.textContent=`✓ Thank you, ${data.user_name}! Your feedback submitted.`;
+      Msg.style.display=’block’;
+      e.target.reset();
+      document.querySelectorAll(‘.frequency-btn’).forEach(b=>b.classList.remove(‘active’));
+      setTimeout(()=>msg.style.display=’none’,5000);
+    }else{
+      Alert(‘Error: ‘+(result.message||’Unknown error’));
+    }
+  }catch(err){
+    Console.error(err);
+    Alert(‘Failed to submit feedback. Please try again.’);
+  }finally{
+    submitBtn.textContent=originalText;
+    submitBtn.disabled=false;
+  }
+});
+</script>
+</body>
+</html>
+
