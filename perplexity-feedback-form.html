@@ -199,7 +199,7 @@ Document.getElementById(‘feedbackForm’).addEventListener(‘submit’,async 
   submitBtn.disabled=true;
 
   try{
-    const res=await fetch(‘https://perplexity-feedback-onrender.com/api/submit-feedback’,{
+    const res=await fetch(‘https://perplexity-feedback-system-1-onrender.com/api/submit-feedback’,{
       method:’POST’,
       headers:{‘Content-Type’:’application/json’},
       body:JSON.stringify({
